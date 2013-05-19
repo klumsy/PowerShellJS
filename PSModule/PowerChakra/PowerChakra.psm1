@@ -1,9 +1,12 @@
 ﻿write-host -ForegroundColor Yellow "PowerChakra"
 
+#region implementation detail variables for module
 $script:JSSessions = new-object "System.Collections.ObjectModel.Collection``1[System.Object]" 
 $script:newsessionnameindex = 0
 $script:newsessionIDindex = 0
-
+#endregion
+ 
+#region JSSession CMDlets (New,Get,Remove)
 function New-JSSession
 {
     [CmdletBinding()]
@@ -72,5 +75,73 @@ function Remove-JSSession
     
     
 }
+#endregion
+
+function Get-JSCommand {
+[cmdletbinding()]param()
+Get-Command -Module PowerChakra
+}
+
+function Invoke-JS {
+    [CmdletBinding()]
+    param(
+    [Parameter(Mandatory=$false,Position=0)]
+    [string] $Script,
+    [Parameter(Mandatory=$false)]
+    [string] $Name,
+    [Parameter(Mandatory=$false)]
+    [Int] $Id,
+    [Parameter(Mandatory=$false)]
+    [ValidateScript({$_ -eq $null -or $_.psobject.typenames -contains "JSSession"} )]
+    [object] $Session,
+    [Parameter(Mandatory=$false)]
+    [switch] $NoResults
+    )
+    #TODO find session, otherwise create a temporary session. #we aren't having fan out , so only so with one , if duplicates then error
+    $hassession = $false;$hasTempSession=$false;
+    if($session -ne $null) { $hassession = $true; } #lets trust that if the classname is JSSession its valid
+    elseif ($id -ne 0 ) {
+        $tmp = Get-JSSession -id $id
+        if (@($tmp).Count -gt 1) { throw "Must resolve to a single session" }
+        if ($tmp -ne $null) {$session = $tmp; $hassession = $true} 
+     }
+    elseif ($name -ne [string]::Empty) {
+        $tmp = Get-JSSession -Name $Name
+        if (@($tmp).Count -gt 1) { throw "Must resolve to a single session" }
+        if ($tmp -ne $null) {$session = $tmp; $hassession = $true} 
+     }
+    if(-not $hassession)
+     {
+      $engine = new-object MsieJavaScriptEngine.MsieJsEngine $true,$true
+      $tmpsession = New-Object pscustomobject -Property @{
+            Id = -1
+            Name = "TMP SESSION"
+            State = "NOTIMPLEMENTED" #TODO implement approprate states.
+            Engine = $engine
+        }
+      $tmpsession.psobject.typenames.insert(0,"JSSession") #TODO some PS1XML formating for this object "type"
+      $hasTempSession = $true;
+      $session = $tmpsession
+      $hassession = $true
+     }
+    if ($NoResults)
+     {
+         $session.engine.execute($script)
+     }
+    else
+     {
+       $session.engine.evaluate($script)
+     }
+    if($hasTempSession)
+     {
+      #cleanup
+      $session.engine.dispose();
+     }
+    
+}
+
+
+Export-ModuleMember -Function New-JSSession,Get-JSSession,Remove-JSSession,Get-JSCommand,Invoke-JS
+
 
 
