@@ -1,4 +1,4 @@
-Copyright 2012 Andrey Taritsyn - http://www.taritsyn.ru
+Copyright 2013 ShellTools LLC.
 
 Microsoft Public License (Ms-PL)
 
