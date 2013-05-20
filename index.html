@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Powerchakra by klumsy</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Powerchakra</h1>
+        <h2>PowerChakra. MS's JavaScript Engine hosted inside PowerShell. This Project will Host MS's Chakra Javascript Engine inside of PowerShell, providing Cmdlets to execute arbitary Javascript, Javascript Functions from within PowerShell.</h2>
+        <a href="https://github.com/klumsy/PowerChakra" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>PowerChakra. MS's JavaScript Engine hosted inside PowerShell.</h1>
+
+<p>This Project will Host MS's Chakra Javascript Engine inside of PowerShell, providing Cmdlets to execute arbitary Javascript, Javascript Functions from within PowerShell.</p>
+
+<h2>Goals</h2>
+
+<ul>
+<li>Run Arbitary JS from within PowerShell.</li>
+<li>Ability to have JSSessions so you can have more than one JS runtime active at a time.
+
+<ul>
+<li>get-JSSession -&gt; list in the session in the environment. (or get a specific one).</li>
+<li>New-JSSession -&gt; ability to create a JS runtime environment with various options.</li>
+<li>Remove-JSSesson -&gt; remove a JS runtime environment.</li>
+</ul>
+</li>
+<li>Load JS files into a JSSession.</li>
+<li>Load JS files.</li>
+<li>Run JS functions from PS, passing in properties.</li>
+<li>return JS results to PowerShell.</li>
+<li>Get-JSfunction -session X : List functions in a JS session (possibly in the future a provider).</li>
+<li>Get-JSVariable -Session X : List (or get a specific) variable from JS session.</li>
+<li>Set-JSVariable -Session X : sets the value of a JS var.</li>
+<li>Variables , Results and Arguments.
+
+<ul>
+<li>transform compatible types automatically (i.e string, bool, int, double (depending on number in JS 
+), null etc.</li>
+<li>ability to provide transformation functions.</li>
+<li>other objects on the way in get transformed into JSON, and on the way out can come as JSON, or get<br>
+transformed to PSCustomObjects.</li>
+</ul>
+</li>
+<li>Invoke-JS - main way to run JS
+
+<ul>
+<li>a way to invoke it simply where a session is created and destroyed at the end.</li>
+<li>ability to create a new session with this.</li>
+<li>ability to run code without returning any values.</li>
+<li>ability to take in PS arguments, and pass them (and if needed transform them).</li>
+<li>ability to return results as correct PS types, or JSON or PScustomObject.</li>
+</ul>
+</li>
+<li>Invoke-JSfunction -Name ... -Session -Arguments : Ability to call a JS function in a session.</li>
+<li>New-JSproxy - Ability to take a JS function (or functions) and generate a PS wrapper.</li>
+</ul><h2>MidTerm Goals</h2>
+
+<ul>
+<li>Call Back to PowerShell.</li>
+<li>Access PS variables from within JS.</li>
+<li>Ability to submit PS events.</li>
+<li>various package distributions (Joels, Chocolatey , Nuget)</li>
+<li>CoffeeScript and TypeScript support (include those libraries automatically, and functions that will parse,compile,and execute them)</li>
+</ul><h2>Non-Goals</h2>
+
+<ul>
+<li>any WebServer or trying to be Node.JS.</li>
+</ul><h2>Possible Future Scope</h2>
+
+<ul>
+<li>Enter-JSSession - basically a Javascript REPL interface not too unlike Node.JS </li>
+<li>Start-JSJob - aysnc sessions that work like jobs. working behind the scenes, either it will plug
+into the PSJob framework with | Wait-job and Receive-Job or at least work in a consistant manner. (Wait-JSJob , Receive-JSJob).</li>
+<li>Object to do Ajax calls.</li>
+</ul><h1>Examples</h1>
+
+<pre><code> ipmo PowerChakra -Force
+
+ #invoke a simple expression
+ invoke-js "5+5"
+
+ New-JSSession -Name test
+ #invoke an expression, in a session, and DON'T RETURN RESULTS
+ Invoke-JS -Name test -Script "var x = 5; function add(y){return y+y}" -NoResults
+ #reuse the session, running a function previously applied AND return results.
+ Invoke-JS -Name test -Script "add(x,10)"
+
+ #create a nested PS object
+ invoke-JS -Name test -Script "var ourobj = {name : 'PowerChakra', numbers : [1,2,3] , something: { x:1}  }" -NoResults
+ #get object as JSON, then convert to PS object 
+ $objectasJSON = invoke-JS -Name test -Script "JSON.stringify(ourobj)"
+ $objectasJSON 
+ $objectasPSobj = ConvertFrom-Json $objectasJSON
+ $objectasPSobj | fl
+</code></pre>
+
+<h1>Installation</h1>
+
+<p>TODO:</p>
+
+<h3>Random Notes</h3>
+
+<p>SessionID and Name
+Call backs
+JS exceptions.</p>
+
+<h1>License</h1>
+
+<p>(C) 2013 ShellTools LLC. Released under <a href="https://github.com/klumsy/PowerChakra/blob/master/LICENSE.md">Microsoft Public License (Ms-PL)</a></p>
+
+<p>The .Net Javascript Wrapper is derived from <a href="http://github.com/Taritsyn/MsieJavaScriptEngine">MSieJavaScriptEngine</a>
+<a href="http://github.com/Taritsyn/MsieJavaScriptEngine/blob/master/LICENSE.md">Microsoft Public License (Ms-PL)</a></p>
+
+<h1>Credits</h1>
+
+<ul>
+<li>
+<a href="http://github.com/Taritsyn/MsieJavaScriptEngine">MSieJavaScriptEngine</a> - <a href="http://github.com/Taritsyn/MsieJavaScriptEngine/blob/master/LICENSE.md">License: Microsoft Public License (Ms-PL)</a> Part of the code of this library served as the .Net library powering PowerChakra.</li>
+<li>
+<a href="http://github.com/xpaulbettsx/SassAndCoffee">SassAndCoffee.JavaScript</a> - <a href="http://github.com/xpaulbettsx/SassAndCoffee/blob/master/COPYING">License: Microsoft Public License (Ms-PL)</a> Part of the code of this library served as the basis for MSIE JS Engine.</li>
+<li>
+<a href="http://nuget.org/packages/ES5">ECMAScript 5 Polyfill</a> - Adds support for many of the new functions in ECMAScript 5 to downlevel browsers using the samples provided by Douglas Crockford in his <a href="http://channel9.msdn.com/Events/MIX/MIX11/EXT13">"ECMAScript 5: The New Parts"</a> talk.</li>
+<li>
+<a href="http://github.com/douglascrockford/JSON-js">JSON2 library</a> - Adds support of the JSON object from ECMAScript 5 to downlevel browsers.</li>
+<li>
+<a href="http://ajaxmin.codeplex.com/">Microsoft Ajax Minifier</a> - <a href="http://ajaxmin.codeplex.com/license">License: Apache License 2.0 (Apache)</a> JS-files, that used MSIE JS Engine, minificated by using ajaxmin.exe.</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/klumsy/PowerChakra/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/klumsy/PowerChakra/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/klumsy/PowerChakra"></a> is maintained by <a href="https://github.com/klumsy">klumsy</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
