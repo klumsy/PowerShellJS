@@ -35,6 +35,7 @@ This Project will Host MS's Chakra Javascript Engine inside of PowerShell, provi
 * Access PS variables from within JS.
 * Ability to submit PS events.
 * various package distributions (Joels, Chocolatey , Nuget)
+* CoffeeScript and TypeScript support (include those libraries automatically, and functions that will parse,compile,and execute them)
 
 ##Non-Goals
 * any WebServer or trying to be Node.JS.
