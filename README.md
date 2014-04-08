@@ -1,4 +1,4 @@
-# PowerChakra. MS's JavaScript Engine hosted inside PowerShell.
+# PowerShell.JS - JavaScript hosted inside PowerShell.
 
 This Project will Host MS's Chakra Javascript Engine inside of PowerShell, providing Cmdlets to execute arbitary Javascript, Javascript Functions from within PowerShell.
 
