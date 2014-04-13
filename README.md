@@ -79,7 +79,7 @@ JS exceptions.
 
 # License
 
-(C) 2013 ShellTools LLC. Released under [Microsoft Public License (Ms-PL)](https://github.com/klumsy/PowerChakra/blob/master/LICENSE.md)
+(C) 2013-2014 ShellTools LLC. Released under [Microsoft Public License (Ms-PL)](https://github.com/klumsy/PowerChakra/blob/master/LICENSE.md)
 
 The .Net Javascript Wrapper is derived from [MSieJavaScriptEngine]
 (http://github.com/Taritsyn/MsieJavaScriptEngine)
