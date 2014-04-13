@@ -1,4 +1,4 @@
-﻿write-host -ForegroundColor Yellow "PowerChakra"
+﻿write-host -ForegroundColor Yellow "PowerShellJS"
 
 #region implementation detail variables for module
 $script:JSSessions = new-object "System.Collections.ObjectModel.Collection``1[System.Object]" 
