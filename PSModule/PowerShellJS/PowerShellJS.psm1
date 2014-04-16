@@ -23,7 +23,7 @@ function New-JSSession
       }
     #TODO try/catch
     #TODO options to exclude JSON and ES5 shim.
-    $engine = new-object MsieJavaScriptEngine.MsieJsEngine $true,$true
+    $engine = new-object MsieJavaScriptEngine.MsieJsEngine "ChakraActiveScript",$true,$true
     $session = New-Object pscustomobject -Property @{
             Id = $script:newsessionIDindex 
             Name = $Name
