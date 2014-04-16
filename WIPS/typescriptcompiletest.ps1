@@ -4,7 +4,10 @@
   New-JSSession -Name test
  # var compiler = new TypeScript.TypeScriptCompiler();
  $typescriptjs = Get-Content C:\dev\myown\PowerShellJS\PowerShellJS\typescript\typescript.js -Raw
- invoke-JS -Name test -Script $typescriptjs
+
+ #invoke-JS -Name test -Script $typescriptjs
+ (Get-JSSession -Name test).Engine.ExecuteFile("C:\dev\myown\PowerShellJS\PowerShellJS\PSModule\PowerShellJS\typescript.js",[System.Text.Encoding]::UTF8)
+ 
  #create a nested PS object
  invoke-JS -Name test -Script "var ourobj = {name : 'PowerChakra', numbers : [1,2,3] , something: { x:1}  }" -NoResults
  #get object as JSON, then convert to PS object 
