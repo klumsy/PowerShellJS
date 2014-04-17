@@ -83,7 +83,7 @@ Get-Command -Module PowerChakra
 }
 
 
-function Invoke-TypeScipt
+function Invoke-TypeScript
 {
    [CmdletBinding()]
     param(
@@ -126,11 +126,23 @@ function Invoke-TypeScipt
       $session = $tmpsession
       $hassession = $true
      }
-    $istypeScriptLoaded = $session.engine.evaluate("TypeScript !== undefined && TypeScript !== null")
+    $istypeScriptLoaded = $session.engine.Hasvariable("TypeScript") 
     if (!$istypeScriptLoaded) { 
        $session.Engine.ExecuteFile($(join-path $psscriptroot "typescript.js"),[System.Text.Encoding]::UTF8)
-
      }
+     $session.Engine.setVariableValue("_typescripttocompile",$script)
+    invoke-JS -session $session -Script "
+         var compiler = new TypeScript.TypeScriptCompiler()
+         var snapshot = TypeScript.ScriptSnapshot.fromString(_typescripttocompile)
+         compiler.addFile('dynamictypescript.js', snapshot);
+         var iter = compiler.compile();
+         var output = '';
+         while(iter.moveNext()) {
+            var current = iter.current().outputFiles[0];
+            output += !!current ? current.text : '';
+          }
+          eval(output)
+          " -NoResults:$NoResults
 
     if($hasTempSession)
      {
@@ -200,7 +212,7 @@ function Invoke-JS {
 }
 
 
-Export-ModuleMember -Function New-JSSession,Get-JSSession,Remove-JSSession,Get-JSCommand,Invoke-JS
+Export-ModuleMember -Function New-JSSession,Get-JSSession,Remove-JSSession,Get-JSCommand,Invoke-JS,Invoke-TypeScript
 
 
 

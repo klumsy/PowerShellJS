@@ -7,7 +7,7 @@
 
  #invoke-JS -Name test -Script $typescriptjs
  (Get-JSSession -Name test).Engine.ExecuteFile("C:\dev\myown\PowerShellJS\PowerShellJS\PSModule\PowerShellJS\typescript.js",[System.Text.Encoding]::UTF8)
- $typescriptcode = 'var isDone: boolean = false;'
+ $typescriptcode = 'var adder = x => x * x; adder(5)'
  (Get-JSSession -Name test).Engine.setVariableValue("_typescripttocompile",$typescriptcode)
  #create a nested PS object
 # invoke-JS -Name test -Script $typescriptcode -NoResults
@@ -24,7 +24,9 @@
  while(iter.moveNext()) {
     var current = iter.current().outputFiles[0];
     output += !!current ? current.text : '';
-  }" -NoResults
+  }
+  eval(output)
+  "# -NoResults
 
 #      compiler.addFile(filename, snapshot);
 
