@@ -1,6 +1,6 @@
 # PowerShell.JS - JavaScript hosted inside PowerShell.
 
-This Project will Host MS's Chakra Javascript Engine inside of PowerShell, providing Cmdlets to execute arbitary Javascript, Javascript Functions from within PowerShell.
+This Project will Host MS's Chakra Javascript Engine inside of PowerShell, providing Cmdlets to execute arbitary Javascript, Javascript Functions from within PowerShell Now Supporting TypeScript 1.0
 
 ##Goals
 * Run Arbitary JS from within PowerShell.
@@ -69,7 +69,7 @@ This Project will Host MS's Chakra Javascript Engine inside of PowerShell, provi
  
 
 #Installation
-TODO:.
+Copy PSModule/PowerShellJS to your PowerShellModules folder, then load with Import-Module
 
 ###Random Notes
 SessionID and Name
@@ -91,3 +91,4 @@ The .Net Javascript Wrapper is derived from [MSieJavaScriptEngine]
 * [ECMAScript 5 Polyfill](http://nuget.org/packages/ES5) - Adds support for many of the new functions in ECMAScript 5 to downlevel browsers using the samples provided by Douglas Crockford in his ["ECMAScript 5: The New Parts"](http://channel9.msdn.com/Events/MIX/MIX11/EXT13) talk.
 * [JSON2 library](http://github.com/douglascrockford/JSON-js) - Adds support of the JSON object from ECMAScript 5 to downlevel browsers.
 * [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/) - [License: Apache License 2.0 (Apache)](http://ajaxmin.codeplex.com/license) JS-files, that used MSIE JS Engine, minificated by using ajaxmin.exe.
+* [TypeScript](http://typescript.codeplex.com) - [License: Apache License 2.0 (Apache)](http://typescript.codeplex.com/license) TypeScript Language and Compiler
