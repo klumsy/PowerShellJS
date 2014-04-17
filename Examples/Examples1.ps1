@@ -1,5 +1,4 @@
-﻿ #ipmo C:\Users\v-kapros\Documents\GitHub\PowerChakra\PSModule\PowerChakra -Force
- ipmo PowerChakra -Force
+﻿ ipmo PowerShellJS -Force
  
  #invoke a simple expression
  invoke-js "5+5"
