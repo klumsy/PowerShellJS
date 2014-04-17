@@ -7,22 +7,24 @@
 
  #invoke-JS -Name test -Script $typescriptjs
  (Get-JSSession -Name test).Engine.ExecuteFile("C:\dev\myown\PowerShellJS\PowerShellJS\PSModule\PowerShellJS\typescript.js",[System.Text.Encoding]::UTF8)
- 
+ $typescriptcode = 'var isDone: boolean = false;'
+ (Get-JSSession -Name test).Engine.setVariableValue("_typescripttocompile",$typescriptcode)
  #create a nested PS object
- invoke-JS -Name test -Script "var ourobj = {name : 'PowerChakra', numbers : [1,2,3] , something: { x:1}  }" -NoResults
+# invoke-JS -Name test -Script $typescriptcode -NoResults
  #get object as JSON, then convert to PS object 
- invoke-JS -Name test -Script "var compiler = new TypeScript.TypeScriptCompiler()" -NoResults
- invoke-JS -Name test -Script "var snapshot = TypeScript.ScriptSnapshot.fromString('var isDone: boolean = false;');" -NoResults
+ #invoke-JS -Name test -Script "var compiler = new TypeScript.TypeScriptCompiler()" -NoResults
+ #invoke-JS -Name test -Script "var snapshot = TypeScript.ScriptSnapshot.fromString(_typescripttocompile);" -NoResults
 
- invoke-JS -Name test -Script "compiler.addFile('test.js', snapshot);
-
-      var iter = compiler.compile();
-
-      var output = '';
-      while(iter.moveNext()) {
-        var current = iter.current().outputFiles[0];
-        output += !!current ? current.text : '';
-      }" -NoResults
+ invoke-JS -Name test -Script "
+ var compiler = new TypeScript.TypeScriptCompiler()
+ var snapshot = TypeScript.ScriptSnapshot.fromString(_typescripttocompile)
+ compiler.addFile('dynamictypescript.js', snapshot);
+ var iter = compiler.compile();
+ var output = '';
+ while(iter.moveNext()) {
+    var current = iter.current().outputFiles[0];
+    output += !!current ? current.text : '';
+  }" -NoResults
 
 #      compiler.addFile(filename, snapshot);
 

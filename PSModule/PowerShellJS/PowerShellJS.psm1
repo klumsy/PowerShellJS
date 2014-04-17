@@ -127,6 +127,10 @@ function Invoke-TypeScipt
       $hassession = $true
      }
     $istypeScriptLoaded = $session.engine.evaluate("TypeScript !== undefined && TypeScript !== null")
+    if (!$istypeScriptLoaded) { 
+       $session.Engine.ExecuteFile($(join-path $psscriptroot "typescript.js"),[System.Text.Encoding]::UTF8)
+
+     }
 
     if($hasTempSession)
      {
