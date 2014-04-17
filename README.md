@@ -67,6 +67,13 @@ This Project will Host MS's Chakra Javascript Engine inside of PowerShell, provi
 	 $objectasPSobj = ConvertFrom-Json $objectasJSON
 	 $objectasPSobj | fl
  
+A TypeScript Example
+
+	ipmo PowerShellJS -Force
+	$null = New-JSSession -Name test
+	Invoke-TypeScript -name test -script "1+1"
+	Invoke-TypeScript -name test -script "var adder = x => x * x" -NoResults
+	Invoke-JS -name test -Script "adder(5)"
 
 #Installation
 Copy PSModule/PowerShellJS to your PowerShellModules folder, then load with Import-Module
